@@ -1,1 +1,21 @@
- 
+button {
+  height: 50px;
+  width: 50px;
+  margin: 2px;
+  border: none;
+}
+
+input {
+  width: 221px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+#calculator {
+  margin: auto;
+  width: 230px;
+}
+
+#equals {
+  background-color: #4885ed;
+}
