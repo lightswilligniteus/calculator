@@ -1,6 +1,12 @@
+// Array appended to with each value, seperated by an operator
+// The calculator checks for syntax (e.g. ++ doesn't wrok)
+// = is the 'go bnutton'
+// . ( ) + - / * = and 0-9
+// Needs to deal with negatives (possible plus minus button?)
+
 let tempa = 0
 let a = [];
-let operator;
+let operator = [];
 let previousPress;
 let index = 0;
 
@@ -17,7 +23,7 @@ buttons.forEach((button) => {
       a = null;
     } else if (pressed == "+" || pressed == "-" || pressed == "*" || pressed == "/") {
       if (!(previousPress == "+" || previousPress == "-" || previousPress == "*" || previousPress == "/")) {
-          operator = pressed;
+          operator[index] = pressed;
           previousPress = pressed;
           a[index] = tempa;
           tempa = 0;
@@ -34,20 +40,24 @@ buttons.forEach((button) => {
 
 
 function operate(num, operator) {
-  if (operator == "+") {
-    console.log(add(num));
-  } else if (operator == "-") {
-    console.log(subtract(num));
-  } else if (operator == "*") {
-    console.log(multiply(num));
-  } else if (operator == "/") {
-    console.log(divide(num));
+  let answer = 0;
+  for(i=0; i < operator.length; i++) {
+    if (operator[i] == "+") {
+      answer += add(num);
+    } else if (operator[i] == "-") {
+      answer += subtract(num);
+    } else if (operator[i] == "*") {
+      answer += multiply(num);
+    } else if (operator[i] == "/") {
+      answer += divide(num);
+    }
   }
+  console.log(answer);
 }
 
 function add(num) {
 	let add = 0;
-	for(let i = 0; i < num.length; i++) {
+	for(let i = 0; i < 2; i++) {
     console.log(Number(num[i]));
 		add += Number(num[i]);
 	}
@@ -77,4 +87,4 @@ function divide(num) {
     divide /= Number(num[i]);
   }
   return divide;
-  }
+}
