@@ -26,7 +26,7 @@ function calculate(values) {
   let result = values.join("");
   // return evil(result);
   try {
-    return doMath(result);
+    return doMath(result).toFixed(2);
   }
   catch(err) {
     return "Invalid input!";
