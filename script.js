@@ -1,19 +1,35 @@
-let displayValue = [];
-
+let arrayValue = [];
+let tempValue = "";
+let displayValue = "";
 let buttons = document.querySelectorAll("button");
 let textBox = document.querySelector("input");
 buttons.forEach((button) => {
   button.addEventListener('click', () => {
     if (button.textContent == "=") {
-        textBox.value = calculate(displayValue);
+        arrayValue.push(tempValue);
+        arrayValue.push(button.textContent);
+        textBox.value = arrayValue.join("");
+        console.log(arrayValue);
+        textBox.value = calculate(arrayValue);
     } else if (button.textContent == "CL") {
-       displayValue = [];
-       textBox.value = displayValue;
+       arrayValue = [];
+       tempValue = "";
+       displayValue = "";
+       textBox.value = arrayValue;
     } else {
-      displayValue.push(button.textContent);
-      textBox.value = displayValue.join("");
+      if (!(button.textContent == "+" || button.textContent == "-" || button.textContent == "*" || button.textContent == "/")) {
+        tempValue += button.textContent;
+        displayValue += button.textContent;
+        textBox.value = displayValue;
+      } else {
+        arrayValue.push(tempValue);
+        arrayValue.push(button.textContent);
+        displayValue += button.textContent;
+        textBox.value = displayValue;
+        tempValue = "";
+        console.log(arrayValue);
     }
-  });
+  }});
 });
 
 function operate(a, b, operator) {
@@ -39,16 +55,26 @@ function operate(a, b, operator) {
 }
 
 function calculate(value) {
-    let i = 0;
-    for (j = 0; j < value.length; j++) {
-      if (value[j] == "+" || value[j] == "-" || value[j] == "*" || value[j] == "/") {
-        i++;
-      }
+  let i = 0;
+  let currResult = 0;
+  for (let j = 0; j < value.length; j++) {
+    if (value[j] == "+" || value[j] == "-" || value[j] == "*" || value[j] == "/") {
+      currResult += recursiveFn(currResult, value[j-1], value[j+1], value[j], i);
+      i++;
     }
-    let tempA = value[0];
-    let operator = value[1];
-    let tempB = value[2];
-    return operate(Number(tempA), Number(tempB), operator);
+  }
+  return currResult;
+}
+
+function recursiveFn(result, a, b, operator, index) {
+  console.log(index);
+  if (index == 0) {
+      console.log("a: " + a + " b: " + b + " operator: " + operator + " index 1");
+      return operate(Number(a), Number(b), operator);
+  } else {
+          console.log("result: " + result + " b: " + b + " operator: " + operator + " index 2");
+    return operate(result, Number(b), operator);
+  }
 }
 
 function add(a, b) {
