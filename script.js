@@ -7,10 +7,9 @@ buttons.forEach((button) => {
   button.addEventListener('click', () => {
     if (button.textContent == "=") {
         arrayValue.push(tempValue);
-        arrayValue.push(button.textContent);
+        // arrayValue.push(button.textContent);
         textBox.value = arrayValue.join("");
-        console.log(arrayValue);
-        textBox.value = calculate(arrayValue);
+        textBox.value = operate(arrayValue);
     } else if (button.textContent == "CL") {
        arrayValue = [];
        tempValue = "";
@@ -27,54 +26,45 @@ buttons.forEach((button) => {
         displayValue += button.textContent;
         textBox.value = displayValue;
         tempValue = "";
-        console.log(arrayValue);
     }
   }});
 });
 
-function operate(a, b, operator) {
-  switch(operator) {
-    case "=":
-      break;
-    case "*":
-      return multiply(a, b);
-      break;
-    case "/":
-      return divide(a, b);
-      break;
-    case "-":
-      return subtract(a, b);
-      break;
-    case "+":
-      return add(a, b);
-      break;
-    case "CL":
-      clear();
-      break;
-  }
-}
-
-function calculate(value) {
+function operate(value) {
   let i = 0;
   let currResult = 0;
-  for (let j = 0; j < value.length; j++) {
-    if (value[j] == "+" || value[j] == "-" || value[j] == "*" || value[j] == "/") {
-      currResult += recursiveFn(currResult, value[j-1], value[j+1], value[j], i);
-      i++;
+    for (let j = value.length; j > 0; j--) {
+       if (value[j] == "/") {
+        currResult = divide(Number(value[j-1]), Number(value[j+1]));
+        value.splice(j-1, 3, currResult);
+        console.log(value + " this is divide");
+      }
     }
-  }
-  return currResult;
-}
 
-function recursiveFn(result, a, b, operator, index) {
-  console.log(index);
-  if (index == 0) {
-      console.log("a: " + a + " b: " + b + " operator: " + operator + " index 1");
-      return operate(Number(a), Number(b), operator);
-  } else {
-          console.log("result: " + result + " b: " + b + " operator: " + operator + " index 2");
-    return operate(result, Number(b), operator);
-  }
+    for (let j = value.length; j > 0; j--) {
+      if (value[j] == "*") {
+        currResult = multiply(Number(value[j-1]), Number(value[j+1]));
+        value.splice(j-1, 3, currResult);
+        console.log(value);
+        console.log(currResult + "this is times");
+      }
+    }
+
+    for (let j = value.length; j > 0; j--) {
+      if (value[j] == "+") {
+        currResult = add(Number(value[j-1]), Number(value[j+1]));
+        value.splice(j-1, 3, currResult);
+        console.log(value + " this is addition");
+      }
+    }
+    for (let j = value.length; j > 0; j--) {
+      if (value[j] == "-") {
+        currResult = minus(Number(value[j-1]), Number(value[j+1]));
+        value.splice(j-1, 3, currResult);
+        console.log(value + " this is minus");
+      }
+    }
+  return currResult;
 }
 
 function add(a, b) {
