@@ -7,16 +7,15 @@ buttons.forEach((button) => {
   button.addEventListener('click', () => {
     if (button.textContent == "=") {
         arrayValue.push(tempValue);
-        // arrayValue.push(button.textContent);
         textBox.value = arrayValue.join("");
-        textBox.value = operate(arrayValue);
+        calc(arrayValue);
     } else if (button.textContent == "CL") {
        arrayValue = [];
        tempValue = "";
        displayValue = "";
        textBox.value = arrayValue;
     } else {
-      if (!(button.textContent == "+" || button.textContent == "-" || button.textContent == "*" || button.textContent == "/")) {
+      if (!(button.textContent == "+" || button.textContent == "-" || button.textContent == "*" || button.textContent == "/" || button.textContent == "(" || button.textContent == ")")) {
         tempValue += button.textContent;
         displayValue += button.textContent;
         textBox.value = displayValue;
@@ -33,11 +32,17 @@ buttons.forEach((button) => {
 function operate(value) {
   let i = 0;
   let currResult = 0;
+
+  for (let j = value.length; j > 0; j--) {
+     if (isNaN(value[j])) {
+      return NaN;
+    }
+  }
+
     for (let j = value.length; j > 0; j--) {
        if (value[j] == "/") {
         currResult = divide(Number(value[j-1]), Number(value[j+1]));
         value.splice(j-1, 3, currResult);
-        console.log(value + " this is divide");
       }
     }
 
@@ -45,8 +50,6 @@ function operate(value) {
       if (value[j] == "*") {
         currResult = multiply(Number(value[j-1]), Number(value[j+1]));
         value.splice(j-1, 3, currResult);
-        console.log(value);
-        console.log(currResult + "this is times");
       }
     }
 
@@ -54,17 +57,42 @@ function operate(value) {
       if (value[j] == "+") {
         currResult = add(Number(value[j-1]), Number(value[j+1]));
         value.splice(j-1, 3, currResult);
-        console.log(value + " this is addition");
       }
     }
     for (let j = value.length; j > 0; j--) {
       if (value[j] == "-") {
-        currResult = minus(Number(value[j-1]), Number(value[j+1]));
+        currResult = subtract(Number(value[j-1]), Number(value[j+1]));
         value.splice(j-1, 3, currResult);
-        console.log(value + " this is minus");
       }
     }
   return currResult;
+}
+
+function calc(value) {
+  let indexStart = undefined;
+  let indexEnd = undefined;
+
+  for (let j = value.length; j > 0; j--) {
+    if (value[j] == "(") {
+      indexStart = j;
+    } else if (value[j] == ")") {
+      indexEnd = j;
+    }
+  }
+
+  if (!(indexStart == undefined && indexEnd == undefined)) {
+    let tempArray = value.slice(indexStart+1, indexEnd);
+    let tempResult = operate(tempArray);
+    value.splice(indexStart - 1, (indexEnd-indexStart + 3), tempResult);
+  } else if (indexStart == undefined && indexEnd == undefined) {
+    let answer = operate(value);
+    if (answer == Infinity || isNaN(answer)) {
+      answer = "THAT DOESN'T WORK!"
+    }
+    document.querySelector("input").value = answer;
+    return;
+  }
+  calc(value);
 }
 
 function add(a, b) {
