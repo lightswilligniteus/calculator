@@ -15,7 +15,9 @@ buttons.forEach((button) => {
        displayValue = "";
        textBox.value = arrayValue;
     } else {
-      if (!(button.textContent == "+" || button.textContent == "-" || button.textContent == "*" || button.textContent == "/" || button.textContent == "(" || button.textContent == ")")) {
+      if (!(button.textContent == "+" || button.textContent == "-" ||
+          button.textContent == "*" || button.textContent == "/" ||
+          button.textContent == "(" || button.textContent == ")")) {
         tempValue += button.textContent;
         displayValue += button.textContent;
         textBox.value = displayValue;
@@ -32,12 +34,6 @@ buttons.forEach((button) => {
 function operate(value) {
   let i = 0;
   let currResult = 0;
-
-  for (let j = value.length; j > 0; j--) {
-     if (isNaN(value[j])) {
-      return NaN;
-    }
-  }
 
     for (let j = value.length; j > 0; j--) {
        if (value[j] == "/") {
