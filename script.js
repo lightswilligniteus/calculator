@@ -3,6 +3,7 @@ let tempValue = "";
 let displayValue = "";
 let buttons = document.querySelectorAll("button");
 let textBox = document.querySelector("input");
+textBox.disabled = true;
 buttons.forEach((button) => {
   button.addEventListener('click', () => {
     if (button.textContent == "=") {

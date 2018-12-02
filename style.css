@@ -1,5 +1,6 @@
 body {
   background-color: lightblue;
+  background-image: url("pixabayimage.jpg");
 }
 
 button {
@@ -13,6 +14,10 @@ input {
   width: 221px;
   height: 40px;
   margin-bottom: 5px;
+}
+
+h1 {
+  text-align: center;
 }
 
 #calculator {
